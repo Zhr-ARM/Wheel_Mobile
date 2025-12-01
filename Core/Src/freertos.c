@@ -116,6 +116,7 @@ void MX_FREERTOS_Init(void) {
   * @brief  Function implementing the defaultTask thread.
   * @param  argument: Not used
   * @retval None
+  * @test  LED blinks every 500 ms
   */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
@@ -124,7 +125,8 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_13);
+    osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
 }

@@ -60,6 +60,9 @@ virtualFolder:
           files:
             - path: ../Core/Src/system_stm32f1xx.c
           folders: []
+        - name: Hardware
+          files: []
+          folders: []
     - name: Middlewares
       files: []
       folders:
@@ -97,6 +100,7 @@ targets:
         - ../Drivers/CMSIS/Include
         - .cmsis/include
         - ../MDK-ARM/RTE/_Wheel_Mobile
+        - ../Drivers/Hardware
       libList: []
     excludeList: []
     toolchain: AC5
@@ -215,6 +219,16 @@ targets:
       OpenOCD:
         baseAddr: "0x08000000"
         bin: ""
-        interface: stlink
+        interface: cmsis-dap
         target: stm32f1x
+      STLink:
+        address: "0x8000000"
+        bin: ""
+        elFile: None
+        optionBytes: .eide/wheel_mobile.st.option.bytes.ini
+        otherCmds: ""
+        proType: SWD
+        resetMode: default
+        runAfterProgram: true
+        speed: 4000
     uploader: OpenOCD
