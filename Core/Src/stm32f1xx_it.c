@@ -175,6 +175,20 @@ void USART1_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(INT_Pin);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+
+  /* USER CODE END EXTI15_10_IRQn 1 */
+}
+
+/**
   * @brief This function handles TIM6 global interrupt.
   */
 void TIM6_IRQHandler(void)
@@ -189,5 +203,16 @@ void TIM6_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-
+/**
+  * @brief  GPIO 外部中断回调函数
+  * @param  GPIO_Pin: 触发中断的引脚
+  */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  // 判断是否是连接 MPU6050 INT 的引脚 (这里假设引脚宏定义为 INT_Pin)
+  if(GPIO_Pin == INT_Pin)
+  {
+    Read_DMP(); // 读取 DMP 数据
+  }
+}
 /* USER CODE END 1 */

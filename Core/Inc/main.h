@@ -31,7 +31,10 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "FreeRTOS.h"
+#include "task.h"
+#include "cmsis_os.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -53,7 +56,8 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+extern float Roll,Pitch,Yaw,gyro_Roll,gyro_Pitch,gyro_Yaw ,accel_x,accel_y,accel_z;//XYZ三轴旋转角度、角速度
+extern uint8_t PS2_KEY,PS2_LX,PS2_LY,PS2_RX,PS2_RY;
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -85,6 +89,7 @@ void Error_Handler(void);
 #define IO5_GPIO_Port GPIOB
 #define INT_Pin GPIO_PIN_12
 #define INT_GPIO_Port GPIOB
+#define INT_EXTI_IRQn EXTI15_10_IRQn
 #define LED_Pin GPIO_PIN_13
 #define LED_GPIO_Port GPIOB
 #define EN_Pin GPIO_PIN_14
@@ -103,7 +108,37 @@ void Error_Handler(void);
 #define CS_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
+typedef int32_t  s32;
+typedef int16_t s16;
+typedef int8_t  s8;
 
+typedef const int32_t sc32;  /*!< Read Only */
+typedef const int16_t sc16;  /*!< Read Only */
+typedef const int8_t sc8;   /*!< Read Only */
+
+typedef __IO int32_t  vs32;
+typedef __IO int16_t  vs16;
+typedef __IO int8_t   vs8;
+
+typedef __I int32_t vsc32;  /*!< Read Only */
+typedef __I int16_t vsc16;  /*!< Read Only */
+typedef __I int8_t vsc8;   /*!< Read Only */
+
+typedef uint32_t  u32;
+typedef uint16_t u16;
+typedef uint8_t  u8;
+
+typedef const uint32_t uc32;  /*!< Read Only */
+typedef const uint16_t uc16;  /*!< Read Only */
+typedef const uint8_t uc8;   /*!< Read Only */
+
+typedef __IO uint32_t  vu32;
+typedef __IO uint16_t vu16;
+typedef __IO uint8_t  vu8;
+
+typedef __I uint32_t vuc32;  /*!< Read Only */
+typedef __I uint16_t vuc16;  /*!< Read Only */
+typedef __I uint8_t vuc8;   /*!< Read Only */
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

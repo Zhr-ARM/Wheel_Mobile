@@ -62,7 +62,37 @@ virtualFolder:
           folders: []
         - name: Hardware
           files: []
-          folders: []
+          folders:
+            - name: OLED
+              files:
+                - path: ../Drivers/Hardware/OLED/font.h
+                - path: ../Drivers/Hardware/OLED/oled.c
+                - path: ../Drivers/Hardware/OLED/oled.h
+              folders: []
+            - name: PS2
+              files:
+                - path: ../Drivers/Hardware/PS2/ps2.c
+                - path: ../Drivers/Hardware/PS2/ps2.h
+              folders: []
+            - name: MPU6050
+              files:
+                - path: ../Drivers/Hardware/MPU6050/mpu6050.c
+                - path: ../Drivers/Hardware/MPU6050/mpu6050.h
+              folders:
+                - name: DMP
+                  files:
+                    - path: ../Drivers/Hardware/MPU6050/DMP/dmpKey.h
+                    - path: ../Drivers/Hardware/MPU6050/DMP/dmpmap.h
+                    - path: ../Drivers/Hardware/MPU6050/DMP/inv_mpu.c
+                    - path: ../Drivers/Hardware/MPU6050/DMP/inv_mpu.h
+                    - path: ../Drivers/Hardware/MPU6050/DMP/inv_mpu_dmp_motion_driver.c
+                    - path: ../Drivers/Hardware/MPU6050/DMP/inv_mpu_dmp_motion_driver.h
+                  folders: []
+            - name: Delay
+              files:
+                - path: ../Drivers/Hardware/Delay/delay.c
+                - path: ../Drivers/Hardware/Delay/delay.h
+              folders: []
     - name: Middlewares
       files: []
       folders:
@@ -101,6 +131,11 @@ targets:
         - .cmsis/include
         - ../MDK-ARM/RTE/_Wheel_Mobile
         - ../Drivers/Hardware
+        - ../Drivers/Hardware/OLED
+        - ../Drivers/Hardware/PS2
+        - ../Drivers/Hardware/MPU6050
+        - ../Drivers/Hardware/MPU6050/DMP
+        - ../Drivers/Hardware/Delay
       libList: []
     excludeList: []
     toolchain: AC5
@@ -123,14 +158,11 @@ targets:
             warnings: all-warnings
           global:
             output-debug-info: enable
-            use-microLIB: false
+            use-microLIB: true
           linker:
             $outputTaskExcludes:
               - .bin
             output-format: elf
-            ro-base: ""
-            rw-base: ""
-            xo-base: ""
         scatterFilePath: ""
         storageLayout:
           RAM:

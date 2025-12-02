@@ -25,7 +25,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "oled.h"
+#include "mpu6050.h"
+#include "ps2.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +50,8 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
+osThreadId oledHandle;
+osThreadId ps2Handle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -55,6 +59,8 @@ osThreadId defaultTaskHandle;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
+void Oled_show(void const * argument);
+void PS2_recv(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -105,6 +111,14 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
+  /* definition and creation of oled */
+  osThreadDef(oled, Oled_show, osPriorityAboveNormal, 0, 256);
+  oledHandle = osThreadCreate(osThread(oled), NULL);
+
+  /* definition and creation of ps2 */
+  osThreadDef(ps2, PS2_recv, osPriorityRealtime, 0, 128);
+  ps2Handle = osThreadCreate(osThread(ps2), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -122,6 +136,11 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+  MPU6050_initialize();           //MPU6050初始化
+  osDelay(10);                   //延时	
+  DMP_Init();                     //初始化DMP
+  osDelay(10);                   //延时
+  
   /* Infinite loop */
   for(;;)
   {
@@ -129,6 +148,45 @@ void StartDefaultTask(void const * argument)
     osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
+}
+
+/* USER CODE BEGIN Header_Oled_show */
+/**
+* @brief Function implementing the oled thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Oled_show */
+void Oled_show(void const * argument)
+{
+  /* USER CODE BEGIN Oled_show */
+  OLED_Init();  /* Infinite loop */
+  for(;;)
+  {
+    oled_show();
+    osDelay(5);
+  }
+  /* USER CODE END Oled_show */
+}
+
+/* USER CODE BEGIN Header_PS2_recv */
+/**
+* @brief Function implementing the ps2 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_PS2_recv */
+void PS2_recv(void const * argument)
+{
+  /* USER CODE BEGIN PS2_recv */
+  PS2_SetInit();                  //PS2手柄初始化
+  /* Infinite loop */
+  for(;;)
+  {
+    PS2_Control();
+    osDelay(5);
+  }
+  /* USER CODE END PS2_recv */
 }
 
 /* Private application code --------------------------------------------------*/
