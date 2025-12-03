@@ -30,6 +30,8 @@
 #include "ps2.h"
 #include "math.h"
 #include "can.h"
+#include "movebase.h"
+#include "usart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +60,7 @@ osThreadId angle_motorHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+wheel_t wheel={{0,0},{0,0},{0,0},{0,0},90.0};
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
@@ -112,19 +114,19 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 256);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of oled */
-  osThreadDef(oled, Oled_show, osPriorityAboveNormal, 0, 256);
+  osThreadDef(oled, Oled_show, osPriorityAboveNormal, 0, 512);
   oledHandle = osThreadCreate(osThread(oled), NULL);
 
   /* definition and creation of ps2 */
-  osThreadDef(ps2, PS2_recv, osPriorityAboveNormal, 0, 128);
+  osThreadDef(ps2, PS2_recv, osPriorityAboveNormal, 0, 256);
   ps2Handle = osThreadCreate(osThread(ps2), NULL);
 
   /* definition and creation of angle_motor */
-  osThreadDef(angle_motor, Angle_motor_control, osPriorityRealtime, 0, 256);
+  osThreadDef(angle_motor, Angle_motor_control, osPriorityRealtime, 0, 512);
   angle_motorHandle = osThreadCreate(osThread(angle_motor), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -226,12 +228,17 @@ void Angle_motor_control(void const * argument)
       CAN_EN_C = 0;
       CAN_EN_D = 0;
     }
+    Output_Wheel((int)(127-PS2_RY), (int)(PS2_RX-128), (int)(PS2_LY-127), &wheel);
+    // CAN1_SEND_data(CAN_EN_A, CAN_EN_B, CAN_EN_C, CAN_EN_D,
+    //                 RAD2ANGLE(wheel.rightFront.direction), RAD2ANGLE(wheel.leftFront.direction),
+    //                 RAD2ANGLE(wheel.leftRear.direction), RAD2ANGLE(wheel.rightRear.direction));
     CAN1_SEND_data(CAN_EN_A, CAN_EN_B, CAN_EN_C, CAN_EN_D,
-                   -180,
-                   -180,
-                   -180,
-                   -180);
-    osDelay(5);
+                    0, 0,
+                    0, 0);
+    printf("a:%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\r\n",Angle_current_A,Angle_current_B,Angle_current_C,Angle_current_D,RAD2ANGLE(wheel.rightFront.direction),RAD2ANGLE(wheel.leftFront.direction),RAD2ANGLE(wheel.leftRear.direction),RAD2ANGLE(wheel.rightRear.direction));
+    // osDelay(1000);
+    //HAL_UART_Transmit(&huart1, (uint8_t *)"hello\n", 6, 10);
+    osDelay(50);
   }
   /* USER CODE END Angle_motor_control */
 }

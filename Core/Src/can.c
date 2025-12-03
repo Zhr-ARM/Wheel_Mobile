@@ -19,13 +19,18 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "can.h"
-
+#include "math.h"
 /* USER CODE BEGIN 0 */
 // 修改为旧代码中的 ID
 uint16_t CAN_ID1 = 0x121; 
 uint16_t CAN_ID2 = 0x122;
 uint16_t CAN_ID3 = 0x123;
 uint16_t CAN_ID4 = 0x124;
+
+// 定义 PI 常量（如果未定义）
+#ifndef PI
+#define PI 3.14159265358979323846
+#endif
 
 uint8_t FLAG_CAN = 0;
 uint8_t txbuf[8];
@@ -495,4 +500,7 @@ void CAN1_SEND_data(uint8_t EN_A, uint8_t EN_B, uint8_t EN_C, uint8_t EN_D, floa
          }                    
     }  
 }
+
+/* USER CODE BEGIN 4 */
+
 /* USER CODE END 1 */

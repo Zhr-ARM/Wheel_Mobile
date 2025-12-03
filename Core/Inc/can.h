@@ -63,6 +63,8 @@ u8 CAN1_Receive_Msg(u8 *buf);            // 查询方式接收
 void CAN1_Receive_data(void);
 
 void CAN1_SEND_data(uint8_t EN_A, uint8_t EN_B, uint8_t EN_C, uint8_t EN_D, float angle_A, float angle_B, float angle_C, float angle_D);
+void Car_Swerve_Control(void);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

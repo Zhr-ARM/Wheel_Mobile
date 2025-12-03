@@ -68,46 +68,46 @@ void oled_show(void)
 // 		                      OLED_ShowNumber(95,40, Encoder_D,5,12);	
 // }		
 // if(FLAG_CHAN==1){
-// //*******************电机A的PWM值和编码器值********************//
-// 	  if( Angle_current_A<0)OLED_ShowString(00,10,"-"),
-// 		                      OLED_ShowNumber(15,10,-Angle_current_A,5,12);
-// 		else                 	OLED_ShowString(00,10,"+"),
-// 		                      OLED_ShowNumber(15,10, Angle_current_A,5,12); 
+//*******************电机A的PWM值和编码器值********************//
+	  if( Angle_current_A<0)OLED_ShowString(00,30,"-"),
+		                      OLED_ShowNumber(15,30,-Angle_current_A,5,12);
+		else                 	OLED_ShowString(00,30,"+"),
+		                      OLED_ShowNumber(15,30, Angle_current_A,5,12); 
 		
-// 		if( Angle_target_A<0)	OLED_ShowString(80,10,"-"),
-// 		                      OLED_ShowNumber(95,10,-Angle_target_A,5,12);
-// 		else                 	OLED_ShowString(80,10,"+"),
-// 		                      OLED_ShowNumber(95,10, Angle_target_A,5,12);
-// //*******************电机B的PWM值和编码器值********************//
-// 		if( Angle_current_B<0)OLED_ShowString(00,20,"-"),
-// 		                      OLED_ShowNumber(15,20,-Angle_current_B,5,12);
-// 		else                 	OLED_ShowString(00,20,"+"),
-// 		                      OLED_ShowNumber(15,20, Angle_current_B,5,12); 
+		// if( Angle_target_A<0)	OLED_ShowString(80,10,"-"),
+		//                       OLED_ShowNumber(95,10,-Angle_target_A,5,12);
+		// else                 	OLED_ShowString(80,10,"+"),
+		//                       OLED_ShowNumber(95,10, Angle_target_A,5,12);
+//*******************电机B的PWM值和编码器值********************//
+		if( Angle_current_B<0)OLED_ShowString(45,30,"-"),
+		                      OLED_ShowNumber(60,30,-Angle_current_B,5,12);
+		else                 	OLED_ShowString(45,30,"+"),
+		                      OLED_ShowNumber(60,30, Angle_current_B,5,12); 
 		  
-// 		if( Angle_target_B<0)	OLED_ShowString(80,20,"-"),
-// 		                      OLED_ShowNumber(95,20,-Angle_target_B,5,12);
-// 		else                 	OLED_ShowString(80,20,"+"),
-// 		                      OLED_ShowNumber(95,20, Angle_target_B,5,12);
-// //*******************电机C的PWM值和编码器值********************//
-// 		if( Angle_current_C<0)OLED_ShowString(00,30,"-"),
-// 		                      OLED_ShowNumber(15,30,-Angle_current_C,5,12);
-// 		else                 	OLED_ShowString(00,30,"+"),
-// 		                      OLED_ShowNumber(15,30, Angle_current_C,5,12); 
+		// if( Angle_target_B<0)	OLED_ShowString(80,20,"-"),
+		//                       OLED_ShowNumber(95,20,-Angle_target_B,5,12);
+		// else                 	OLED_ShowString(80,20,"+"),
+		//                       OLED_ShowNumber(95,20, Angle_target_B,5,12);
+//*******************电机C的PWM值和编码器值********************//
+		if( Angle_current_C<0)OLED_ShowString(00,40,"-"),
+		                      OLED_ShowNumber(15,40,-Angle_current_C,5,12);
+		else                 	OLED_ShowString(00,40,"+"),
+		                      OLED_ShowNumber(15,40, Angle_current_C,5,12); 
 		  
-// 		if( Angle_target_C<0)	OLED_ShowString(80,30,"-"),
-// 		                      OLED_ShowNumber(95,30,-Angle_target_C,5,12);
-// 		else                 	OLED_ShowString(80,30,"+"),
-// 		                      OLED_ShowNumber(95,30, Angle_target_C,5,12);
-// ////*******************电机D的PWM值和编码器值********************//
-// 		if( Angle_current_D<0)OLED_ShowString(00,40,"-"),
-// 		                      OLED_ShowNumber(15,40,-Angle_current_D,5,12);
-// 		else                 	OLED_ShowString(00,40,"+"),
-// 		                      OLED_ShowNumber(15,40, Angle_current_D,5,12); 
+		// if( Angle_target_C<0)	OLED_ShowString(80,30,"-"),
+		//                       OLED_ShowNumber(95,30,-Angle_target_C,5,12);
+		// else                 	OLED_ShowString(80,30,"+"),
+		//                       OLED_ShowNumber(95,30, Angle_target_C,5,12);
+//*******************电机D的PWM值和编码器值********************//
+		if( Angle_current_D<0)OLED_ShowString(45,40,"-"),
+		                      OLED_ShowNumber(60,40,-Angle_current_D,5,12);
+		else                 	OLED_ShowString(45,40,"+"),
+		                      OLED_ShowNumber(60,40, Angle_current_D,5,12); 
 		  
-// 		if( Angle_target_D<0)	OLED_ShowString(80,40,"-"),
-// 		                      OLED_ShowNumber(95,40,-Angle_target_D,5,12);
-// 		else                 	OLED_ShowString(80,40,"+"),
-// 		                      OLED_ShowNumber(95,40, Angle_target_D,5,12);	
+		// if( Angle_target_D<0)	OLED_ShowString(80,40,"-"),
+		//                       OLED_ShowNumber(95,40,-Angle_target_D,5,12);
+		// else                 	OLED_ShowString(80,40,"+"),
+		//                       OLED_ShowNumber(95,40, Angle_target_D,5,12);	
 // }	
 
 

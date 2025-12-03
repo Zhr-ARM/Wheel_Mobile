@@ -73,6 +73,8 @@ virtualFolder:
               files:
                 - path: ../Drivers/Hardware/PS2/ps2.c
                 - path: ../Drivers/Hardware/PS2/ps2.h
+                - path: ../Drivers/Hardware/PS2/movebase.c
+                - path: ../Drivers/Hardware/PS2/movebase.h
               folders: []
             - name: MPU6050
               files:

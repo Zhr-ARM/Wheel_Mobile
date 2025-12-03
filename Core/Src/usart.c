@@ -21,7 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "stdio.h"
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -270,5 +270,12 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
-
+int fputc(int ch,FILE *f)
+{
+	uint8_t temp[1] = {ch};
+	
+	//采用轮询方式发送1字节数据
+	HAL_UART_Transmit(&huart1,temp,1,2);
+	return ch;
+}
 /* USER CODE END 1 */
