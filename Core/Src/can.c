@@ -21,10 +21,11 @@
 #include "can.h"
 
 /* USER CODE BEGIN 0 */
-uint16_t CAN_ID1 = 0x101; // 示例ID，请修改为你实际需要的ID
-uint16_t CAN_ID2 = 0x102;
-uint16_t CAN_ID3 = 0x103;
-uint16_t CAN_ID4 = 0x104;
+// 修改为旧代码中的 ID
+uint16_t CAN_ID1 = 0x121; 
+uint16_t CAN_ID2 = 0x122;
+uint16_t CAN_ID3 = 0x123;
+uint16_t CAN_ID4 = 0x124;
 
 uint8_t FLAG_CAN = 0;
 uint8_t txbuf[8];
@@ -49,7 +50,7 @@ void MX_CAN_Init(void)
 
   /* USER CODE END CAN_Init 1 */
   hcan.Instance = CAN1;
-  hcan.Init.Prescaler = 12;
+  hcan.Init.Prescaler = 6;
   hcan.Init.Mode = CAN_MODE_NORMAL;
   hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
   hcan.Init.TimeSeg1 = CAN_BS1_3TQ;

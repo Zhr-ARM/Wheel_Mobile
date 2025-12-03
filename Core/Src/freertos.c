@@ -230,6 +230,7 @@ void Angle_motor_control(void const * argument)
                    -180,
                    -180,
                    -180);
+    if(FLAG_CAN_ON<100)FLAG_CAN_ON++;//在CAN数据处理里面清零，如果数字超过某个数值证明没有接收到符合协议的CAN数据
     osDelay(5);
   }
   /* USER CODE END Angle_motor_control */

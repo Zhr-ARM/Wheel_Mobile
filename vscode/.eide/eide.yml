@@ -1,8 +1,8 @@
 version: "4.1"
 name: Wheel_Mobile
 type: ARM
-deviceName: null
-packDir: null
+deviceName: STM32F103RC
+packDir: .pack/Keil/STM32F1xx_DFP.2.3.0
 srcDirs: []
 virtualFolder:
   name: <virtual_root>
@@ -119,7 +119,9 @@ targets:
       defineList:
         - USE_HAL_DRIVER
         - STM32F103xE
+        - STM32F10X_HD
       incList:
+        - .
         - ../Core/Inc
         - ../Drivers/STM32F1xx_HAL_Driver/Inc
         - ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
@@ -154,7 +156,7 @@ targets:
             C_FLAGS: --diag_suppress=1 --diag_suppress=1295
             c99-mode: true
             one-elf-section-per-function: true
-            optimization: level-3
+            optimization: level-0
             warnings: all-warnings
           global:
             output-debug-info: enable
