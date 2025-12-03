@@ -144,6 +144,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+  osDelay(200);         // 新增：上电后先等待200ms，让外设电源稳定
   MPU6050_initialize(); // MPU6050初始化
   osDelay(10);          // 延时
   DMP_Init();           // 初始化DMP
@@ -153,7 +154,7 @@ void StartDefaultTask(void const * argument)
   for (;;)
   {
     HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_13);
-    osDelay(250);
+    osDelay(100);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -230,7 +231,6 @@ void Angle_motor_control(void const * argument)
                    -180,
                    -180,
                    -180);
-    if(FLAG_CAN_ON<100)FLAG_CAN_ON++;//在CAN数据处理里面清零，如果数字超过某个数值证明没有接收到符合协议的CAN数据
     osDelay(5);
   }
   /* USER CODE END Angle_motor_control */
