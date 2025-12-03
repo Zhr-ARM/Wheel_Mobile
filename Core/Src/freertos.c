@@ -57,6 +57,7 @@ osThreadId defaultTaskHandle;
 osThreadId oledHandle;
 osThreadId ps2Handle;
 osThreadId angle_motorHandle;
+osThreadId myTask05Handle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -67,6 +68,7 @@ void StartDefaultTask(void const * argument);
 void Oled_show(void const * argument);
 void PS2_recv(void const * argument);
 void Angle_motor_control(void const * argument);
+void StartTask05(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -129,6 +131,10 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(angle_motor, Angle_motor_control, osPriorityRealtime, 0, 512);
   angle_motorHandle = osThreadCreate(osThread(angle_motor), NULL);
 
+  /* definition and creation of myTask05 */
+  osThreadDef(myTask05, StartTask05, osPriorityNormal, 0, 128);
+  myTask05Handle = osThreadCreate(osThread(myTask05), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -146,11 +152,11 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  // osDelay(200);         // 新增：上电后先等待200ms，让外设电源稳定
-  // MPU6050_initialize(); // MPU6050初始化
-  // osDelay(10);          // 延时
-  // DMP_Init();           // 初始化DMP
-  // osDelay(10);          // 延时
+  osDelay(200);         // 新增：上电后先等待200ms，让外设电源稳定
+  MPU6050_initialize(); // MPU6050初始化
+  osDelay(100);          // 延时
+  DMP_Init();           // 初始化DMP
+  osDelay(10);          // 延时
 
   /* Infinite loop */
   for (;;)
@@ -241,6 +247,24 @@ void Angle_motor_control(void const * argument)
     osDelay(50);
   }
   /* USER CODE END Angle_motor_control */
+}
+
+/* USER CODE BEGIN Header_StartTask05 */
+/**
+* @brief Function implementing the myTask05 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTask05 */
+void StartTask05(void const * argument)
+{
+  /* USER CODE BEGIN StartTask05 */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartTask05 */
 }
 
 /* Private application code --------------------------------------------------*/

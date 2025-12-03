@@ -19,8 +19,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "can.h"
-#include "math.h"
+
 /* USER CODE BEGIN 0 */
+#include "math.h"
 // 修改为旧代码中的 ID
 uint16_t CAN_ID1 = 0x121; 
 uint16_t CAN_ID2 = 0x122;

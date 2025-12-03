@@ -273,7 +273,7 @@ void DMP_Init(void)
     while (temp[0] != 0x68)
     {
         i2cRead(0x68, 0x75, 1, temp);
-        osDelay(100); // 延时100ms再试，避免疯狂占用总线
+        //osDelay(100); // 延时100ms再试，避免疯狂占用总线
     }
     if (!mpu_init())
     {
