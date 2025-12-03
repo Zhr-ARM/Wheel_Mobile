@@ -58,6 +58,15 @@ void Error_Handler(void);
 /* USER CODE BEGIN EFP */
 extern float Roll,Pitch,Yaw,gyro_Roll,gyro_Pitch,gyro_Yaw ,accel_x,accel_y,accel_z;//XYZ三轴旋转角度、角速度
 extern uint8_t PS2_KEY,PS2_LX,PS2_LY,PS2_RX,PS2_RY;
+extern uint8_t Start_Flag;                    //启动标志
+extern uint8_t  Flag_STOP;               //启动标志
+extern uint16_t FLAG_CAN_ON;
+extern uint16_t CAN_ID1,CAN_ID2,CAN_ID3,CAN_ID4;
+extern uint8_t  CAN_EN_A, CAN_EN_B, CAN_EN_C, CAN_EN_D, can_ser;
+extern float Angle_current_A,Angle_current_B,Angle_current_C,Angle_current_D;
+extern float Angle_error_A,Angle_error_B,Angle_error_C,Angle_error_D;
+extern float Current_angle_A,Current_angle_B,Current_angle_C,Current_angle_D;
+extern uint8_t abnormal,fault;
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

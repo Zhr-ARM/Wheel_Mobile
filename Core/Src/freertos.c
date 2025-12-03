@@ -1,20 +1,20 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * File Name          : freertos.c
-  * Description        : Code for freertos applications
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * File Name          : freertos.c
+ * Description        : Code for freertos applications
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2025 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -28,6 +28,8 @@
 #include "oled.h"
 #include "mpu6050.h"
 #include "ps2.h"
+#include "math.h"
+#include "can.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +54,7 @@
 osThreadId defaultTaskHandle;
 osThreadId oledHandle;
 osThreadId ps2Handle;
+osThreadId angle_motorHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -61,6 +64,7 @@ osThreadId ps2Handle;
 void StartDefaultTask(void const * argument);
 void Oled_show(void const * argument);
 void PS2_recv(void const * argument);
+void Angle_motor_control(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -71,7 +75,7 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
 static StaticTask_t xIdleTaskTCBBuffer;
 static StackType_t xIdleStack[configMINIMAL_STACK_SIZE];
 
-void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize )
+void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize)
 {
   *ppxIdleTaskTCBBuffer = &xIdleTaskTCBBuffer;
   *ppxIdleTaskStackBuffer = &xIdleStack[0];
@@ -116,8 +120,12 @@ void MX_FREERTOS_Init(void) {
   oledHandle = osThreadCreate(osThread(oled), NULL);
 
   /* definition and creation of ps2 */
-  osThreadDef(ps2, PS2_recv, osPriorityRealtime, 0, 128);
+  osThreadDef(ps2, PS2_recv, osPriorityAboveNormal, 0, 128);
   ps2Handle = osThreadCreate(osThread(ps2), NULL);
+
+  /* definition and creation of angle_motor */
+  osThreadDef(angle_motor, Angle_motor_control, osPriorityRealtime, 0, 256);
+  angle_motorHandle = osThreadCreate(osThread(angle_motor), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -127,41 +135,41 @@ void MX_FREERTOS_Init(void) {
 
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  * @test  LED blinks every 500 ms
-  */
+ * @brief  Function implementing the defaultTask thread.
+ * @param  argument: Not used
+ * @retval None
+ * @test  LED blinks every 500 ms
+ */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  MPU6050_initialize();           //MPU6050初始化
-  osDelay(10);                   //延时	
-  DMP_Init();                     //初始化DMP
-  osDelay(10);                   //延时
-  
+  MPU6050_initialize(); // MPU6050初始化
+  osDelay(10);          // 延时
+  DMP_Init();           // 初始化DMP
+  osDelay(10);          // 延时
+
   /* Infinite loop */
-  for(;;)
+  for (;;)
   {
     HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_13);
-    osDelay(500);
+    osDelay(250);
   }
   /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_Oled_show */
 /**
-* @brief Function implementing the oled thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the oled thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_Oled_show */
 void Oled_show(void const * argument)
 {
   /* USER CODE BEGIN Oled_show */
-  OLED_Init();  /* Infinite loop */
-  for(;;)
+  OLED_Init(); /* Infinite loop */
+  for (;;)
   {
     oled_show();
     osDelay(5);
@@ -171,22 +179,60 @@ void Oled_show(void const * argument)
 
 /* USER CODE BEGIN Header_PS2_recv */
 /**
-* @brief Function implementing the ps2 thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the ps2 thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_PS2_recv */
 void PS2_recv(void const * argument)
 {
   /* USER CODE BEGIN PS2_recv */
-  PS2_SetInit();                  //PS2手柄初始化
+  PS2_SetInit(); // PS2手柄初始化
   /* Infinite loop */
-  for(;;)
+  for (;;)
   {
     PS2_Control();
     osDelay(5);
   }
   /* USER CODE END PS2_recv */
+}
+
+/* USER CODE BEGIN Header_Angle_motor_control */
+/**
+ * @brief Function implementing the angle_motor thread.
+ * @param argument: Not used
+ * @retval None
+ */
+/* USER CODE END Header_Angle_motor_control */
+void Angle_motor_control(void const * argument)
+{
+  /* USER CODE BEGIN Angle_motor_control */
+  /* Infinite loop */
+  for (;;)
+  {
+    CAN1_Receive_data();
+    if (Start_Flag == 1 && Flag_STOP == 0)
+    {
+      CAN_EN_A = 1;
+      CAN_EN_B = 1;
+      CAN_EN_C = 1;
+      CAN_EN_D = 1;
+    }
+    else
+    {
+      CAN_EN_A = 0;
+      CAN_EN_B = 0;
+      CAN_EN_C = 0;
+      CAN_EN_D = 0;
+    }
+    CAN1_SEND_data(CAN_EN_A, CAN_EN_B, CAN_EN_C, CAN_EN_D,
+                   -180,
+                   -180,
+                   -180,
+                   -180);
+    osDelay(5);
+  }
+  /* USER CODE END Angle_motor_control */
 }
 
 /* Private application code --------------------------------------------------*/
