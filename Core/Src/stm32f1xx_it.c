@@ -228,7 +228,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   // 判断是否是连接 MPU6050 INT 的引脚 (这里假设引脚宏定义为 INT_Pin)
   if(GPIO_Pin == INT_Pin)
   {
-    Read_DMP(); // 读取 DMP 数据
+    //Read_DMP(); // 读取 DMP 数据
   }
 }
 /* USER CODE END 1 */

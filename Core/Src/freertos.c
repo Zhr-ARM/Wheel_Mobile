@@ -146,11 +146,11 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  osDelay(200);         // 新增：上电后先等待200ms，让外设电源稳定
-  MPU6050_initialize(); // MPU6050初始化
-  osDelay(10);          // 延时
-  DMP_Init();           // 初始化DMP
-  osDelay(10);          // 延时
+  // osDelay(200);         // 新增：上电后先等待200ms，让外设电源稳定
+  // MPU6050_initialize(); // MPU6050初始化
+  // osDelay(10);          // 延时
+  // DMP_Init();           // 初始化DMP
+  // osDelay(10);          // 延时
 
   /* Infinite loop */
   for (;;)
