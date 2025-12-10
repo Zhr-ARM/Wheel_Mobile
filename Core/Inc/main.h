@@ -67,6 +67,8 @@ extern float Angle_current_A,Angle_current_B,Angle_current_C,Angle_current_D;
 extern float Angle_error_A,Angle_error_B,Angle_error_C,Angle_error_D;
 extern float Current_angle_A,Current_angle_B,Current_angle_C,Current_angle_D;
 extern uint8_t abnormal,fault;
+extern int Voltage;//电池电压
+extern int count_sum,count_size;
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

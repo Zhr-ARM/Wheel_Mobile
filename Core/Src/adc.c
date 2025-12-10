@@ -118,5 +118,37 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 }
 
 /* USER CODE BEGIN 1 */
+/**
+ * @brief 获取ADC原始值 (0-4095)
+ */
+uint16_t Get_ADC_Value(void)
+{
+    HAL_ADC_Start(&hadc1);                     // 启动ADC转换
+    HAL_ADC_PollForConversion(&hadc1, 10);     // 等待转换完成，超时10ms
+    uint16_t val = HAL_ADC_GetValue(&hadc1);   // 获取结果
+    HAL_ADC_Stop(&hadc1);                      // 停止转换（省电）
+    return val;
+}
 
+/**
+ * @brief 获取电池电压
+ * @return 电压值 * 100 (例如 12.60V 返回 1260)
+ * 公式来源: ADC值 * 3.3V / 4096 * 11(分压比) * 100(保留小数)
+ */
+int Get_battery_voltage(void)
+{
+    uint16_t ad_value = 0;
+    
+    // 简单的软件滤波：采样5次求平均，防止突变
+    for(int i = 0; i < 5; i++)
+    {
+        ad_value += Get_ADC_Value();
+        HAL_Delay(2); // 稍微延时
+    }
+    ad_value /= 5;
+    
+    float voltage = (float)ad_value * 3.3f * 11.0f * 100.0f / 4096.0f;
+    
+    return (int)voltage;
+}
 /* USER CODE END 1 */

@@ -21,6 +21,7 @@
 #include "cmsis_os.h"
 #include "adc.h"
 #include "can.h"
+#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -63,7 +64,8 @@ void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN 0 */
 float Roll,Pitch,Yaw,gyro_Roll,gyro_Pitch,gyro_Yaw ,accel_x,accel_y,accel_z;//XYZ三轴旋转角度、角速度
 uint8_t PS2_KEY,PS2_LX,PS2_LY,PS2_RX,PS2_RY;
-u8 Start_Flag=1;                    //启动标志
+u8 Start_Flag_My=0;                    //启动标志
+u8 Start_Flag=0;   
 u8  Flag_STOP=0;               //启动标志
 u16 FLAG_CAN_ON;
 u8  CAN_EN_A=0,CAN_EN_B=0,CAN_EN_C=0,CAN_EN_D=0,can_ser=15;
@@ -71,6 +73,9 @@ float Angle_current_A,Angle_current_B,Angle_current_C,Angle_current_D;
 float Angle_error_A=0,Angle_error_B=0,Angle_error_C=0,Angle_error_D=0;
 float Current_angle_A,Current_angle_B,Current_angle_C,Current_angle_D;
 u8 abnormal=0,fault=0;
+
+int Voltage;//电池电压
+int count_size,count_sum;
 /* USER CODE END 0 */
 
 /**
@@ -81,7 +86,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -102,6 +106,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC1_Init();
   MX_CAN_Init();
   MX_I2C2_Init();

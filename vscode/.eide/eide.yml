@@ -31,6 +31,7 @@ virtualFolder:
                 - path: ../Core/Src/stm32f1xx_it.c
                 - path: ../Core/Src/stm32f1xx_hal_msp.c
                 - path: ../Core/Src/stm32f1xx_hal_timebase_tim.c
+                - path: ../Core/Src/dma.c
               folders: []
     - name: Drivers
       files: []
@@ -95,6 +96,33 @@ virtualFolder:
                 - path: ../Drivers/Hardware/Delay/delay.c
                 - path: ../Drivers/Hardware/Delay/delay.h
               folders: []
+            - name: PID
+              files:
+                - path: ../Drivers/Hardware/PID/pid.c
+                - path: ../Drivers/Hardware/PID/pid.h
+              folders: []
+            - name: Motor
+              files:
+                - path: ../Drivers/Hardware/Motor/motor.c
+                - path: ../Drivers/Hardware/Motor/motor.h
+              folders: []
+            - name: Encoder
+              files:
+                - path: ../Drivers/Hardware/Encoder/Encoder.c
+                - path: ../Drivers/Hardware/Encoder/Encoder.h
+              folders: []
+            - name: Uart
+              files:
+                - path: ../Drivers/Hardware/Uart/Uart.c
+                - path: ../Drivers/Hardware/Uart/Uart.h
+                - path: ../Drivers/Hardware/Uart/ROS_Uart.c
+                - path: ../Drivers/Hardware/Uart/ROS_Uart.h
+              folders: []
+            - name: Button
+              files:
+                - path: ../Drivers/Hardware/Button/key.c
+                - path: ../Drivers/Hardware/Button/key.h
+              folders: []
     - name: Middlewares
       files: []
       folders:
@@ -140,6 +168,11 @@ targets:
         - ../Drivers/Hardware/MPU6050
         - ../Drivers/Hardware/MPU6050/DMP
         - ../Drivers/Hardware/Delay
+        - ../Drivers/Hardware/Encoder
+        - ../Drivers/Hardware/Motor
+        - ../Drivers/Hardware/PID
+        - ../Drivers/Hardware/Uart
+        - ../Drivers/Hardware/Button
       libList: []
     excludeList: []
     toolchain: AC5

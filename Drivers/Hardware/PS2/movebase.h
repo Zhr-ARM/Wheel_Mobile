@@ -11,6 +11,7 @@
 #define RAD2ANGLE(x) (x / PI * 180.0f)
 // 底盘旋转半径
 #define MOVEBASE_RADIUS (282.8427f)
+//#define MOVEBASE_RADIUS (0.2828427f)
 // 左前轮与中心连线切线方向
 #define LEFT_FRONT_VERTICAL_ANG (-35.0f) //-135.0f
 // 右前轮与中心连线切线方向
